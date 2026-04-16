@@ -44,12 +44,10 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // 注册、登录和 H2 控制台无需登录即可访问。
-                        .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
+                        // 注册、登录接口无需登录即可访问。
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                // 允许 H2 控制台在 iframe 中渲染。
-                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 // 在用户名密码过滤器前插入 JWT 过滤器，优先解析 Token。
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
